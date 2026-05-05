@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import AppNavigator from '@/navigation/AppNavigator';
 
 export default function App() {
   return (
@@ -9,13 +10,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
-          <View style={styles.content}>
-            <Text style={styles.title}>⚡ Momentum</Text>
-            <Text style={styles.subtitle}>Fast Refresh is working!</Text>
-            <Text style={styles.note}>
-              Edit App.tsx to see changes instantly
-            </Text>
-          </View>
+          <AppNavigator />
         </SafeAreaView>
       </SafeAreaProvider>
     </GestureHandlerRootView>
