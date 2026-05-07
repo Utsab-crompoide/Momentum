@@ -24,7 +24,7 @@ export default function TabNavigator() {
             iconName = 'ellipse';
           }
 
-          return <Icon name="home-outline" size={size} color={color} />;
+          return <Icon name={iconName} size={size} color={color} />;
         },
 
         tabBarActiveTintColor: '#e94560',

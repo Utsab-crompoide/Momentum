@@ -12,7 +12,7 @@ export default function AppNavigator() {
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
 
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: true }}>
         <Stack.Screen name="MainTabs" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
