@@ -9,7 +9,7 @@ export default function App() {
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
-          <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
+          <StatusBar barStyle="dark-content" backgroundColor="#FFF8F7" />
           <AppNavigator />
         </SafeAreaView>
       </SafeAreaProvider>
@@ -20,11 +20,11 @@ export default function App() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#FFF8F7',
   },
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#FFF8F7',
   },
   content: {
     flex: 1,

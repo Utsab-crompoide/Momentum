@@ -9,7 +9,5 @@ module.exports = {
             android: null,
         },
     },
-    fonts: [
-        'node_modules/react-native-vector-icons/Fonts/Ionicons.ttf',
-    ],
+    assets: ['src/assets/fonts'],
 };

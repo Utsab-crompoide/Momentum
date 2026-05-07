@@ -1,10 +1,15 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   console.log('HomeScreen rendered');
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+        <Text style={styles.text}>Login</Text>
+      </TouchableOpacity>
       <Text style={styles.text}>Home Screen</Text>
     </View>
   );
