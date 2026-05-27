@@ -15,27 +15,32 @@ import colors from '@/theme/Colors';
 import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const loginSchema = Yup.object().shape({
+const registrationSchema = Yup.object().shape({
+  fullName: Yup.string().required('Full Name is required'),
+  address: Yup.string().required('Address is required'),
   mobile: Yup.string()
     .required('Mobile Number is required')
     .matches(/^[6-9]\d{9}$/, 'Mobile number must be 10 digits'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
 });
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const logo_url = 'https://picsum.photos/200/300';
 
-  const handleLogin = (values: any) => {
-    console.log('Login:', values);
-    navigation.navigate('OTPScreen');
+  const handleSignUp = (values: any) => {
+    console.log('Register:', values);
   };
   return (
     <KeyboardAvoidingView
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top : 0}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView
@@ -72,24 +77,51 @@ const LoginScreen = () => {
                 Welcome Back
               </Text>
               <Text style={[styles.subText, { fontSize: 14 }]}>
-                Enter your phone number to get started.
+                Fill in the details below to get started.
               </Text>
             </View>
 
             <Formik
-              initialValues={{ mobile: '' }}
-              validationSchema={loginSchema}
-              onSubmit={values => console.log('Login:', values)}
+              initialValues={{ fullName: '', address: '', email: '', mobile: '' }}
+              validationSchema={registrationSchema}
+              onSubmit={values => console.log('Register:', values)}
             >
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                values,
-                errors,
-                touched,
-              }) => (
+              {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                 <>
+                  <TextInput
+                    label="Full Name"
+                    placeholder="Enter your full name"
+                    containerStyle={{ marginVertical: 10, gap: 8 }}
+                    inputStyle={{ width: '100%' }}
+                    value={values.fullName}
+                    onChangeText={handleChange('fullName')}
+                    onBlur={handleBlur('fullName')}
+                    error={errors.fullName}
+                    touched={touched.fullName}
+                  />
+                  <TextInput
+                    label="Address"
+                    placeholder="Enter your address"
+                    containerStyle={{ marginVertical: 10, gap: 8 }}
+                    inputStyle={{ width: '100%' }}
+                    value={values.address}
+                    onChangeText={handleChange('address')}
+                    onBlur={handleBlur('address')}
+                    error={errors.address}
+                    touched={touched.address}
+                  />
+                  <TextInput
+                    label="Email Address"
+                    placeholder="Enter your email address"
+                    containerStyle={{ marginVertical: 10, gap: 8 }}
+                    inputStyle={{ width: '100%' }}
+                    inputMode="email"
+                    value={values.email}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    error={errors.email}
+                    touched={touched.email}
+                  />
                   <TextInput
                     label="Mobile Number"
                     placeholder="Enter your mobile number"
@@ -104,30 +136,15 @@ const LoginScreen = () => {
                   />
                   <Button
                     title="Get OTP"
-                    onPress={() => handleLogin(values)}
+                    onPress={() => handleSignUp(values)}
                     style={{ marginTop: 10 }}
                   />
                 </>
               )}
             </Formik>
 
-            <TouchableOpacity
-              style={{
-                marginTop: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => navigation.navigate('RegisterScreen')}
-            >
-              <Text
-                style={{
-                  color: colors['secondary'],
-                  textDecorationLine: 'underline',
-                  fontFamily: 'PlusJakartaSans-Regular',
-                }}
-              >
-                Don't have an account?
-              </Text>
+            <TouchableOpacity style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center'}} onPress={() => navigation.navigate('LoginScreen')}>
+              <Text style={{color: colors['secondary'], textDecorationLine: 'underline', fontFamily: 'PlusJakartaSans-Regular'}}>Already have an account?</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -180,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
