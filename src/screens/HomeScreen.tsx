@@ -14,14 +14,7 @@ import SearchBar from '@/components/SearchBar';
 import CategoriesList, { Category } from '@/components/CategoriesList';
 import MostBookedSection, { Service } from '@/components/MostBookedSection';
 import WhyGharSewa from '@/components/WhyGharSewa';
-
-const categories: Category[] = [
-  { id: '1', icon: '🔧', label: 'Plumber' },
-  { id: '2', icon: '⚡', label: 'Electrician' },
-  { id: '3', icon: '🧹', label: 'Cleaning' },
-  { id: '4', icon: '🛠️', label: 'Repair' },
-  { id: '5', icon: '🎨', label: 'Painting' },
-];
+import { getCategorySummaries } from '@/data/services';
 
 const mostBookedLargeCard = {
   image:
@@ -54,9 +47,11 @@ const mostBookedServices: Service[] = [
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [searchValue, setSearchValue] = useState('');
+  const categories = getCategorySummaries();
 
   const handleCategoryPress = (category: Category) => {
-    console.log('Category selected:', category.label);
+    console.log('Category selected:', category.name);
+    navigation.navigate('ServiceCategory', { categoryId: category.id });
   };
 
   const handleServicePress = (service: Service) => {
@@ -83,12 +78,11 @@ const HomeScreen = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <UserHeader
-          userName="Aryan"
           location="Kathmandu"
           userImage="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop"
         />
 
-        <Greeting userName="Aryan" />
+        <Greeting userName="Utsab" />
 
         <SearchBar
           placeholder="What do you need help with?"

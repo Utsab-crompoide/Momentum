@@ -1,11 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate('LoginScreen');
+      }}
+    >
       <Text style={styles.text}>Profile Screen</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

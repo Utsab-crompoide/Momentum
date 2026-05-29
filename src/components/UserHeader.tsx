@@ -1,40 +1,65 @@
-import { View, Text, Image, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import colors from '@/theme/Colors';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 interface UserHeaderProps {
-  userName: string;
+  title?: string;
   location: string;
   userImage?: string;
   onLocationPress?: () => void;
+  isSecondary?: boolean;
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({
-  userName,
+  title = 'GharSewa',
   location,
   userImage,
   onLocationPress,
+  isSecondary = false,
 }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.leftSection}>
-        <Image
-          source={
-            userImage
-              ? { uri: userImage }
-              : { uri: 'https://picsum.photos/50/50' }
-          }
-          style={styles.avatar}
-        />
+        {!isSecondary ? (
+          <Image
+            source={
+              userImage
+                ? { uri: userImage }
+                : { uri: 'https://picsum.photos/50/50' }
+            }
+            style={styles.avatar}
+          />
+        ) : (
+          //Back button for secondary header
+          <TouchableOpacity
+            style={[
+              styles.avatar,
+              {
+                backgroundColor: colors['surface'],
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+            ]}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Icon name="arrow-back" size={24} color={colors['on-surface']} />
+          </TouchableOpacity>
+        )}
         <View>
-          <Text style={styles.brandName}>GharSewa</Text>
+          <Text style={styles.brandName}>{title}</Text>
           <View style={styles.locationContainer}>
-            <Text style={styles.locationIcon}>📍</Text>
             <Text style={styles.location}>{location}</Text>
           </View>
         </View>
       </View>
-      <View style={styles.rightSection} />
+      <View style={styles.rightSection}>
+        <Text style={{ fontSize: 24 }}>🔎</Text>
+      </View>
     </View>
   );
 };
@@ -46,7 +71,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: colors.background,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   leftSection: {
     flexDirection: 'row',
@@ -68,9 +101,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-  },
-  locationIcon: {
-    fontSize: 14,
   },
   location: {
     fontSize: 12,

@@ -13,7 +13,7 @@ import CategoryButton from './CategoryButton';
 export interface Category {
   id: string;
   icon: string;
-  label: string;
+  name: string;
 }
 
 interface CategoriesListProps {
@@ -29,10 +29,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
   onSeeAllPress,
   containerStyle,
 }) => {
-  const [activeId, setActiveId] = useState<string | null>(null);
-
   const handlePress = (category: Category) => {
-    setActiveId(category.id);
     onCategoryPress?.(category);
   };
 
@@ -55,8 +52,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
           <CategoryButton
             key={category.id}
             icon={category.icon}
-            label={category.label}
-            isActive={activeId === category.id}
+            label={category.name}
             onPress={() => handlePress(category)}
             containerStyle={styles.categoryButton}
           />
