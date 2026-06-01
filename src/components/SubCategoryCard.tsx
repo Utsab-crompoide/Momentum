@@ -43,7 +43,7 @@ const SubCategoryCard = ({
       </View>
       {quantity === 0 ? (
         <TouchableOpacity style={styles.button} onPress={handleAddPress}>
-          <Text>Add</Text>
+          <Text style={[styles.quantityButtonText, { fontSize: 14 }]}>Add</Text>
         </TouchableOpacity>
       ) : (
         <View style={styles.quantityContainer}>
@@ -51,7 +51,7 @@ const SubCategoryCard = ({
             style={styles.quantityButton}
             onPress={handleDecrement}
           >
-            <Text style={styles.quantityButtonText}>−</Text>
+            <Text style={styles.quantityButtonText}>-</Text>
           </TouchableOpacity>
           <Text style={styles.quantityText}>{quantity}</Text>
           <TouchableOpacity
