@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '@/theme/Colors';
@@ -8,8 +9,13 @@ import HomeScreen from '@/screens/HomeScreen';
 import BookingsScreen from '@/screens/BookingsScreen';
 import AlertsScreen from '@/screens/AlertsScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
+import ServiceCategory from '@/screens/ServiceSelectionScreen';
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createNativeStackNavigator();
+const BookingsStack = createNativeStackNavigator();
+const AlertsStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
 
 interface TabLabelProps {
   focused: boolean;
@@ -31,6 +37,42 @@ const TabLabel: React.FC<{ label: string; focused: boolean }> = ({
     {label}
   </Text>
 );
+
+function HomeStackNavigator() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="HomeScreenMain" component={HomeScreen} />
+      <HomeStack.Screen name="ServiceCategory" component={ServiceCategory} />
+    </HomeStack.Navigator>
+  );
+}
+
+function BookingsStackNavigator() {
+  return (
+    <BookingsStack.Navigator screenOptions={{ headerShown: false }}>
+      <BookingsStack.Screen
+        name="BookingsScreenMain"
+        component={BookingsScreen}
+      />
+    </BookingsStack.Navigator>
+  );
+}
+
+function AlertsStackNavigator() {
+  return (
+    <AlertsStack.Navigator screenOptions={{ headerShown: false }}>
+      <AlertsStack.Screen name="AlertsScreenMain" component={AlertsScreen} />
+    </AlertsStack.Navigator>
+  );
+}
+
+function ProfileStackNavigator() {
+  return (
+    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+      <ProfileStack.Screen name="ProfileScreenMain" component={ProfileScreen} />
+    </ProfileStack.Navigator>
+  );
+}
 
 export default function TabNavigator() {
   return (
@@ -79,7 +121,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackNavigator}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabLabel label="Home" focused={focused} />
@@ -88,7 +130,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Bookings"
-        component={BookingsScreen}
+        component={BookingsStackNavigator}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabLabel label="Bookings" focused={focused} />
@@ -97,7 +139,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Alerts"
-        component={AlertsScreen}
+        component={AlertsStackNavigator}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabLabel label="Alerts" focused={focused} />
@@ -106,7 +148,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabLabel label="Profile" focused={focused} />

@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import colors from '@/theme/Colors';
 import UserHeader from '@/components/UserHeader';
 import Greeting from '@/components/Greeting';
@@ -45,12 +46,11 @@ const mostBookedServices: Service[] = [
 ];
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation: NativeStackNavigationProp<any> = useNavigation();
   const [searchValue, setSearchValue] = useState('');
   const categories = getCategorySummaries();
 
   const handleCategoryPress = (category: Category) => {
-    console.log('Category selected:', category.name);
     navigation.navigate('ServiceCategory', { categoryId: category.id });
   };
 

@@ -13,6 +13,8 @@ import { UserHeader } from '@/components';
 import colors from '@/theme/Colors';
 import SubCategoryCard from '@/components/SubCategoryCard';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const ServiceCategory = () => {
   const [selectedSubCategory, setSelectedSubCategory] = useState<
@@ -21,6 +23,8 @@ const ServiceCategory = () => {
   const route = useRoute();
   const { categoryId } = route.params as { categoryId: string };
   const selectedCategory = getCategoryById(categoryId);
+
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const handleSubCategoryQuantityChange = (
     subCategoryId: string,
@@ -33,7 +37,6 @@ const ServiceCategory = () => {
       } else {
         updated[subCategoryId] = quantity;
       }
-      console.log('SubCategory selected:', updated);
       return updated;
     });
   };
@@ -122,7 +125,11 @@ const ServiceCategory = () => {
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.priceContainer}>
+      <TouchableOpacity
+        style={styles.priceContainer}
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('Bookings' as never)}
+      >
         <View
           style={{
             width: '60%',

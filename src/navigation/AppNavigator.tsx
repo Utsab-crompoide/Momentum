@@ -6,7 +6,6 @@ import TabNavigator from '@/navigation/TabNavigator';
 import LoginScreen from '@/screens/LoginScreen';
 import RegisterScreen from '@/screens/RegisterScreen';
 import OTPScreen from '@/screens/OTPScreen';
-import ServiceCategory from '@/screens/ServiceSelectionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,8 +17,6 @@ export default function AppNavigator() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="OTPScreen" component={OTPScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen name="HomeScreen" component={TabNavigator} />
-        <Stack.Screen name="ServiceCategory" component={ServiceCategory} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -34,12 +34,22 @@ const SubCategoryCard = ({
   };
   return (
     <View style={styles.container}>
-      <View style={{ width: '10%' }}>
+      <View
+        style={{
+          width: '10%',
+          backgroundColor: colors['secondary-container'],
+          alignItems: 'center',
+          borderRadius: 5,
+          padding: 4,
+        }}
+      >
         <Icon name={subCategory?.icon} size={24} color={colors.primary} />
       </View>
       <View style={{ width: '60%', flexDirection: 'column', gap: 4 }}>
-        <Text style={{ color: colors.primary }}>{subCategory?.name}</Text>
-        <Text>Rs. {subCategory?.startingPrice}</Text>
+        <Text style={{ fontWeight: '600' }}>{subCategory?.name}</Text>
+        <Text style={{ color: colors.primary, fontWeight: 'bold' }}>
+          Rs. {subCategory?.startingPrice}
+        </Text>
       </View>
       {quantity === 0 ? (
         <TouchableOpacity style={styles.button} onPress={handleAddPress}>
