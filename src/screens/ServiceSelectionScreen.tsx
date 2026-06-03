@@ -140,7 +140,7 @@ const ServiceCategory = () => {
         >
           <Icon name="cart" size={20} color={colors['on-primary']} />
           <Text style={styles.priceText}>
-            {totalItems} Service{totalItems !== 1 ? 's' : ''} added
+            {totalItems} Service{totalItems > 1 ? 's' : ''} added
           </Text>
         </View>
         <View

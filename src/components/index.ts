@@ -12,6 +12,8 @@ export { default as WhyGharSewa } from './WhyGharSewa';
 export { default as Button } from './Button';
 export { default as TextInput } from './TextInput';
 export { default as OTPInput } from './OTPInput';
+export { default as SuccessModal } from './SuccessModal';
+export { default as ErrorModal } from './ErrorModal';
 
 // Type exports
 export type { Category } from '../types';
