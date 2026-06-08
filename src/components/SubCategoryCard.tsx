@@ -11,7 +11,10 @@ interface SubCategoryCardProps {
     startingPrice: number;
   };
   quantity?: number;
-  onQuantityChange?: (quantity: number) => void;
+  onQuantityChange?: (
+    subCategory: SubCategoryCardProps['subCategory'],
+    quantity: number,
+  ) => void;
 }
 
 const SubCategoryCard = ({
@@ -20,16 +23,16 @@ const SubCategoryCard = ({
   onQuantityChange,
 }: SubCategoryCardProps) => {
   const handleAddPress = () => {
-    onQuantityChange?.(1);
+    onQuantityChange?.(subCategory, 1);
   };
 
   const handleIncrement = () => {
-    onQuantityChange?.(quantity + 1);
+    onQuantityChange?.(subCategory, quantity + 1);
   };
 
   const handleDecrement = () => {
     if (quantity > 0) {
-      onQuantityChange?.(quantity - 1);
+      onQuantityChange?.(subCategory, quantity - 1);
     }
   };
   return (

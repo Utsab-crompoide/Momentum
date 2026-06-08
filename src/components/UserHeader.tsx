@@ -10,6 +10,7 @@ interface UserHeaderProps {
   userImage?: string;
   onLocationPress?: () => void;
   isSecondary?: boolean;
+  showLocation?: boolean;
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({
@@ -18,6 +19,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({
   userImage,
   onLocationPress,
   isSecondary = false,
+  showLocation = true,
 }) => {
   const navigation = useNavigation();
   return (
@@ -33,7 +35,6 @@ const UserHeader: React.FC<UserHeaderProps> = ({
             style={styles.avatar}
           />
         ) : (
-          //Back button for secondary header
           <TouchableOpacity
             style={[
               styles.avatar,
@@ -51,10 +52,16 @@ const UserHeader: React.FC<UserHeaderProps> = ({
           </TouchableOpacity>
         )}
         <View>
-          <Text style={styles.brandName}>{title}</Text>
-          <View style={styles.locationContainer}>
-            <Text style={styles.location}>{location}</Text>
-          </View>
+          <Text
+            style={[styles.brandName, { fontSize: showLocation ? 16 : 24 }]}
+          >
+            {title}
+          </Text>
+          {showLocation && (
+            <View style={styles.locationContainer}>
+              <Text style={styles.location}>{location}</Text>
+            </View>
+          )}
         </View>
       </View>
       <View style={styles.rightSection}>
@@ -70,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 10,
     backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
@@ -87,9 +94,9 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 30,
   },
   brandName: {
     fontSize: 16,

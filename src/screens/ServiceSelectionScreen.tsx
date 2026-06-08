@@ -9,17 +9,28 @@ import {
 import React, { useState, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { getCategoryById } from '@/data/services';
-import { UserHeader } from '@/components';
+import { ErrorModal, UserHeader } from '@/components';
 import colors from '@/theme/Colors';
 import SubCategoryCard from '@/components/SubCategoryCard';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+interface SelectedSubCategory {
+  subCategory: {
+    id: string;
+    name: string;
+    icon: string;
+    startingPrice: number;
+  };
+  quantity: number;
+}
+
 const ServiceCategory = () => {
-  const [selectedSubCategory, setSelectedSubCategory] = useState<
-    Record<string, number>
+  const [selectedSubCategories, setSelectedSubCategories] = useState<
+    Record<string, SelectedSubCategory>
   >({});
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const route = useRoute();
   const { categoryId } = route.params as { categoryId: string };
   const selectedCategory = getCategoryById(categoryId);
@@ -27,34 +38,46 @@ const ServiceCategory = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const handleSubCategoryQuantityChange = (
-    subCategoryId: string,
+    subCategory: any,
     quantity: number,
   ) => {
-    setSelectedSubCategory(prev => {
+    setSelectedSubCategories(prev => {
       const updated = { ...prev };
       if (quantity === 0) {
-        delete updated[subCategoryId];
+        delete updated[subCategory.id];
       } else {
-        updated[subCategoryId] = quantity;
+        updated[subCategory.id] = {
+          subCategory: {
+            id: subCategory.id,
+            name: subCategory.name,
+            icon: subCategory.icon,
+            startingPrice: subCategory.startingPrice,
+          },
+          quantity,
+        };
       }
       return updated;
     });
   };
 
-  const { totalItems, totalPrice } = useMemo(() => {
+  console.log(
+    'Selected SubCategories:',
+    JSON.stringify(selectedSubCategories, null, 2),
+  );
+
+  const { totalItems, totalPrice, selectedItems } = useMemo(() => {
     let count = 0;
     let price = 0;
+    const items: SelectedSubCategory[] = [];
 
-    selectedCategory?.subCategories?.forEach(subCategory => {
-      const quantity = selectedSubCategory[subCategory.id] || 0;
-      if (quantity > 0) {
-        count += quantity;
-        price += quantity * subCategory.startingPrice;
-      }
+    Object.values(selectedSubCategories).forEach(item => {
+      count += item.quantity;
+      price += item.quantity * item.subCategory.startingPrice;
+      items.push(item);
     });
 
-    return { totalItems: count, totalPrice: price };
-  }, [selectedSubCategory, selectedCategory]);
+    return { totalItems: count, totalPrice: price, selectedItems: items };
+  }, [selectedSubCategories]);
 
   return (
     <View style={styles.container}>
@@ -86,9 +109,9 @@ const ServiceCategory = () => {
             <SubCategoryCard
               key={subCategory.id}
               subCategory={subCategory}
-              quantity={selectedSubCategory[subCategory.id] || 0}
-              onQuantityChange={quantity =>
-                handleSubCategoryQuantityChange(subCategory.id, quantity)
+              quantity={selectedSubCategories[subCategory.id]?.quantity || 0}
+              onQuantityChange={(selectedSub, quantity) =>
+                handleSubCategoryQuantityChange(selectedSub, quantity)
               }
             />
           ))}
@@ -128,7 +151,23 @@ const ServiceCategory = () => {
       <TouchableOpacity
         style={styles.priceContainer}
         activeOpacity={0.8}
-        onPress={() => navigation.navigate('Bookings' as never)}
+        onPress={() => {
+          if (Object.keys(selectedSubCategories).length === 0) {
+            console.log('No services selected');
+            setShowErrorModal(true);
+          } else {
+            navigation.navigate('Bookings' as any, {
+              screen: 'BookingsScreenMain',
+              params: {
+                selectedServices: selectedItems,
+                totalPrice,
+                totalItems,
+                categoryId,
+                categoryName: selectedCategory?.name,
+              },
+            });
+          }
+        }}
       >
         <View
           style={{
@@ -158,6 +197,16 @@ const ServiceCategory = () => {
           <Icon name="chevron-forward" size={20} color={colors['on-primary']} />
         </View>
       </TouchableOpacity>
+      <ErrorModal
+        visible={showErrorModal}
+        data={{
+          title: 'No Services Selected',
+          description:
+            'Please select at least one category to proceed with the booking.',
+        }}
+        onPress={() => setShowErrorModal(false)}
+        onCancel={() => setShowErrorModal(false)}
+      ></ErrorModal>
     </View>
   );
 };
